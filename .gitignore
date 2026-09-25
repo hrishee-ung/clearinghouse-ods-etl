@@ -1,0 +1,23 @@
+# Secrets
+.env
+.env.*
+
+# Config files with passwords
+appsettings.json
+appsettings.Development.json
+config.json
+config.yml
+config.yaml
+credentials.json
+secrets.json
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# VS Code
+.vscode/
+
+config/config.yaml
