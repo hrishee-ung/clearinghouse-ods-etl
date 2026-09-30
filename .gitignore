@@ -19,5 +19,7 @@ __pycache__/
 
 # VS Code
 .vscode/
-
+logs/
+output/
+responses/
 config/config.yaml
