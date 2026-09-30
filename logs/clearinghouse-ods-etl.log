@@ -1,0 +1,112 @@
+2026-09-25 11:21:52 | INFO | clearinghouse-ods-etl | Starting process. Run_ID=85d6523bd3a84c77ae39105cccabd0e8
+2026-09-25 11:21:52 | ERROR | clearinghouse-ods-etl | Process failed. Run_ID=85d6523bd3a84c77ae39105cccabd0e8 Error=Failed to connect to SQL Server: ('IM002', '[IM002] [Microsoft][ODBC Driver Manager] Data source name not found and no default driver specified (0) (SQLDriverConnect)')
+2026-09-25 11:24:58 | INFO | clearinghouse-ods-etl | Starting process. Run_ID=97ae1dc79fd54e31b2008fb6a5b2df69
+2026-09-25 11:24:59 | INFO | clearinghouse-ods-etl | PHASE 1 TEST STOP: configuration and startup successful.
+2026-09-25 14:34:09 | INFO | clearinghouse-ods-etl | Starting process. Run_ID=ea4d5e7236c54b8f884add19465e2958
+2026-09-25 14:34:10 | INFO | clearinghouse-ods-etl | PHASE 1 TEST STOP: configuration and startup successful.
+2026-09-25 14:34:11 | INFO | clearinghouse-ods-etl | Extracted 5351 record(s).
+2026-09-25 14:34:11 | INFO | clearinghouse-ods-etl | Source validation passed.
+2026-09-25 14:34:11 | INFO | clearinghouse-ods-etl | PHASE 2 TEST STOP: extraction and source validation successful.
+2026-09-25 15:28:01 | INFO | clearinghouse-ods-etl | Starting process. Run_ID=e933440ab63c4c2a9797edd8ceecd973
+2026-09-25 15:28:01 | INFO | clearinghouse-ods-etl | PHASE 1: configuration and startup successful.
+2026-09-25 15:28:02 | INFO | clearinghouse-ods-etl | Extracted 5351 record(s).
+2026-09-25 15:28:02 | INFO | clearinghouse-ods-etl | Source validation passed.
+2026-09-25 15:28:02 | INFO | clearinghouse-ods-etl | PHASE 2: extraction and source validation successful.
+2026-09-25 15:28:02 | INFO | clearinghouse-ods-etl | Generated file: C:\Users\htalari\University of North Georgia\UNG Nest - Documents\Data Architecture and Strategy\Hrisheekesh Talari\Python\clearinghouse-ods-etl\output\clearinghouse_20260925_152802_e933440ab63c4c2a9797edd8ceecd973.txt
+2026-09-25 15:28:02 | ERROR | clearinghouse-ods-etl | Process failed. Run_ID=e933440ab63c4c2a9797edd8ceecd973 Error=File record count mismatch. Expected 5351, found 5352.
+2026-09-28 08:19:18 | INFO | clearinghouse-ods-etl | Starting process. Run_ID=46b12dce0e444e968aed2e1617420fee
+2026-09-28 08:19:18 | INFO | clearinghouse-ods-etl | PHASE 1: configuration and startup successful.
+2026-09-28 08:19:19 | INFO | clearinghouse-ods-etl | Extracted 5351 record(s).
+2026-09-28 08:19:19 | INFO | clearinghouse-ods-etl | Source validation passed.
+2026-09-28 08:19:19 | INFO | clearinghouse-ods-etl | PHASE 2: extraction and source validation successful.
+2026-09-28 08:19:19 | INFO | clearinghouse-ods-etl | Generated file: C:\Users\htalari\University of North Georgia\UNG Nest - Documents\Data Architecture and Strategy\Hrisheekesh Talari\Python\clearinghouse-ods-etl\output\clearinghouse_20260928_081919_46b12dce0e444e968aed2e1617420fee.txt
+2026-09-28 08:19:19 | INFO | clearinghouse-ods-etl | File validation passed.
+2026-09-28 08:19:19 | INFO | clearinghouse-ods-etl | PHASE 3: file generation and validation successful.
+2026-09-28 08:21:42 | INFO | clearinghouse-ods-etl | Starting process. Run_ID=2bd6527274194445ac8c34a253d00861
+2026-09-28 08:21:42 | INFO | clearinghouse-ods-etl | PHASE 1: configuration and startup successful.
+2026-09-28 08:21:42 | INFO | clearinghouse-ods-etl | Extracted 5351 record(s).
+2026-09-28 08:21:42 | INFO | clearinghouse-ods-etl | Source validation passed.
+2026-09-28 08:21:42 | INFO | clearinghouse-ods-etl | PHASE 2: extraction and source validation successful.
+2026-09-28 08:21:42 | INFO | clearinghouse-ods-etl | Generated file: C:\Users\htalari\University of North Georgia\UNG Nest - Documents\Data Architecture and Strategy\Hrisheekesh Talari\Python\clearinghouse-ods-etl\output\clearinghouse_20260928_082142_2bd6527274194445ac8c34a253d00861.txt
+2026-09-28 08:21:42 | INFO | clearinghouse-ods-etl | File validation passed.
+2026-09-28 08:21:42 | INFO | clearinghouse-ods-etl | PHASE 3: file generation and validation successful.
+2026-09-28 08:21:42 | ERROR | clearinghouse-ods-etl | Process failed. Run_ID=2bd6527274194445ac8c34a253d00861 Error=Required environment variable is missing: 001585st
+2026-09-28 08:30:31 | INFO | clearinghouse-ods-etl | Starting process. Run_ID=da94a6e643c4489c8ea32087886b86dd
+2026-09-28 08:30:31 | INFO | clearinghouse-ods-etl | PHASE 1: configuration and startup successful.
+2026-09-28 08:30:31 | INFO | clearinghouse-ods-etl | Extracted 5351 record(s).
+2026-09-28 08:30:31 | INFO | clearinghouse-ods-etl | Source validation passed.
+2026-09-28 08:30:31 | INFO | clearinghouse-ods-etl | PHASE 2: extraction and source validation successful.
+2026-09-28 08:30:32 | INFO | clearinghouse-ods-etl | Generated file: C:\Users\htalari\University of North Georgia\UNG Nest - Documents\Data Architecture and Strategy\Hrisheekesh Talari\Python\clearinghouse-ods-etl\output\clearinghouse_20260928_083032_da94a6e643c4489c8ea32087886b86dd.txt
+2026-09-28 08:30:32 | INFO | clearinghouse-ods-etl | File validation passed.
+2026-09-28 08:30:32 | INFO | clearinghouse-ods-etl | PHASE 3: file generation and validation successful.
+2026-09-28 08:30:32 | ERROR | clearinghouse-ods-etl | Process failed. Run_ID=da94a6e643c4489c8ea32087886b86dd Error=SFTP username is not configured.
+2026-09-28 08:32:04 | INFO | clearinghouse-ods-etl | Starting process. Run_ID=a5152681881d47b1956e6bbc3277cd63
+2026-09-28 08:32:04 | INFO | clearinghouse-ods-etl | PHASE 1: configuration and startup successful.
+2026-09-28 08:32:05 | INFO | clearinghouse-ods-etl | Extracted 5351 record(s).
+2026-09-28 08:32:05 | INFO | clearinghouse-ods-etl | Source validation passed.
+2026-09-28 08:32:05 | INFO | clearinghouse-ods-etl | PHASE 2: extraction and source validation successful.
+2026-09-28 08:32:05 | INFO | clearinghouse-ods-etl | Generated file: C:\Users\htalari\University of North Georgia\UNG Nest - Documents\Data Architecture and Strategy\Hrisheekesh Talari\Python\clearinghouse-ods-etl\output\clearinghouse_20260928_083205_a5152681881d47b1956e6bbc3277cd63.txt
+2026-09-28 08:32:05 | INFO | clearinghouse-ods-etl | File validation passed.
+2026-09-28 08:32:05 | INFO | clearinghouse-ods-etl | PHASE 3: file generation and validation successful.
+2026-09-28 08:32:06 | INFO | clearinghouse-ods-etl | SFTP connection established.
+2026-09-28 08:32:06 | INFO | clearinghouse-ods-etl | PHASE 4: SFTP connection successful.
+2026-09-28 09:12:47 | INFO | clearinghouse-ods-etl | Starting process. Run_ID=4f09e0a75fe440f29f60110013b5183f
+2026-09-28 09:12:47 | INFO | clearinghouse-ods-etl | PHASE 1: configuration and startup successful.
+2026-09-28 09:12:48 | INFO | clearinghouse-ods-etl | Extracted 5351 record(s).
+2026-09-28 09:12:48 | INFO | clearinghouse-ods-etl | Source validation passed.
+2026-09-28 09:12:48 | INFO | clearinghouse-ods-etl | PHASE 2: extraction and source validation successful.
+2026-09-28 09:12:48 | INFO | clearinghouse-ods-etl | Generated file: C:\Users\htalari\University of North Georgia\UNG Nest - Documents\Data Architecture and Strategy\Hrisheekesh Talari\Python\clearinghouse-ods-etl\output\clearinghouse_20260928_091248_4f09e0a75fe440f29f60110013b5183f.txt
+2026-09-28 09:12:48 | INFO | clearinghouse-ods-etl | File validation passed.
+2026-09-28 09:12:48 | INFO | clearinghouse-ods-etl | PHASE 3: file generation and validation successful.
+2026-09-28 09:12:48 | INFO | clearinghouse-ods-etl | SFTP connection established.
+2026-09-28 09:12:48 | INFO | clearinghouse-ods-etl | PHASE 4: SFTP connection successful.
+2026-09-28 09:16:01 | INFO | clearinghouse-ods-etl | Starting process. Run_ID=4f61d15ccf8042dfbeb26d8856e04923
+2026-09-28 09:16:01 | INFO | clearinghouse-ods-etl | PHASE 1: configuration and startup successful.
+2026-09-28 09:16:02 | INFO | clearinghouse-ods-etl | Extracted 5351 record(s).
+2026-09-28 09:16:02 | INFO | clearinghouse-ods-etl | Source validation passed.
+2026-09-28 09:16:02 | INFO | clearinghouse-ods-etl | PHASE 2: extraction and source validation successful.
+2026-09-28 09:16:02 | INFO | clearinghouse-ods-etl | Generated file: C:\Users\htalari\University of North Georgia\UNG Nest - Documents\Data Architecture and Strategy\Hrisheekesh Talari\Python\clearinghouse-ods-etl\output\clearinghouse_20260928_091602_4f61d15ccf8042dfbeb26d8856e04923.txt
+2026-09-28 09:16:02 | INFO | clearinghouse-ods-etl | File validation passed.
+2026-09-28 09:16:02 | INFO | clearinghouse-ods-etl | PHASE 3: file generation and validation successful.
+2026-09-28 09:16:03 | INFO | clearinghouse-ods-etl | SFTP connection established.
+2026-09-28 09:16:03 | INFO | clearinghouse-ods-etl | PHASE 4: SFTP connection successful.
+2026-09-28 09:16:23 | ERROR | clearinghouse-ods-etl | Process failed. Run_ID=4f61d15ccf8042dfbeb26d8856e04923 Error=Failed to upload file after 3 attempt(s): [Errno 2] File does not exist.
+2026-09-28 09:21:09 | INFO | clearinghouse-ods-etl | Starting process. Run_ID=a2053fc0d3b84c92b8ee709d3326893a
+2026-09-28 09:21:09 | INFO | clearinghouse-ods-etl | PHASE 1: configuration and startup successful.
+2026-09-28 09:21:10 | INFO | clearinghouse-ods-etl | Extracted 5351 record(s).
+2026-09-28 09:21:10 | INFO | clearinghouse-ods-etl | Source validation passed.
+2026-09-28 09:21:10 | INFO | clearinghouse-ods-etl | PHASE 2: extraction and source validation successful.
+2026-09-28 09:21:10 | INFO | clearinghouse-ods-etl | Generated file: C:\Users\htalari\University of North Georgia\UNG Nest - Documents\Data Architecture and Strategy\Hrisheekesh Talari\Python\clearinghouse-ods-etl\output\clearinghouse_20260928_092110_a2053fc0d3b84c92b8ee709d3326893a.txt
+2026-09-28 09:21:10 | INFO | clearinghouse-ods-etl | File validation passed.
+2026-09-28 09:21:10 | INFO | clearinghouse-ods-etl | PHASE 3: file generation and validation successful.
+2026-09-28 09:21:11 | INFO | clearinghouse-ods-etl | SFTP connection established.
+2026-09-28 09:21:11 | INFO | clearinghouse-ods-etl | PHASE 4: SFTP connection successful.
+2026-09-28 09:21:11 | INFO | clearinghouse-ods-etl | Uploaded file to ./clearinghouse_20260928_092110_a2053fc0d3b84c92b8ee709d3326893a.txt
+2026-09-28 09:21:11 | INFO | clearinghouse-ods-etl | PHASE 5: file upload successful.
+2026-09-28 09:34:54 | INFO | clearinghouse-ods-etl | Starting process. Run_ID=a051a4204df746d1a796754dae3478d2
+2026-09-28 09:34:55 | INFO | clearinghouse-ods-etl | PHASE 1: configuration and startup successful.
+2026-09-28 09:34:57 | INFO | clearinghouse-ods-etl | Extracted 5351 record(s).
+2026-09-28 09:34:57 | INFO | clearinghouse-ods-etl | Source validation passed.
+2026-09-28 09:34:57 | INFO | clearinghouse-ods-etl | PHASE 2: extraction and source validation successful.
+2026-09-28 09:34:58 | INFO | clearinghouse-ods-etl | Generated file: C:\Users\htalari\University of North Georgia\UNG Nest - Documents\Data Architecture and Strategy\Hrisheekesh Talari\Python\clearinghouse-ods-etl\output\clearinghouse_20260928_093457_a051a4204df746d1a796754dae3478d2.txt
+2026-09-28 09:34:58 | INFO | clearinghouse-ods-etl | File validation passed.
+2026-09-28 09:34:58 | INFO | clearinghouse-ods-etl | PHASE 3: file generation and validation successful.
+2026-09-28 09:35:00 | INFO | clearinghouse-ods-etl | SFTP connection established.
+2026-09-28 09:35:00 | INFO | clearinghouse-ods-etl | PHASE 4: SFTP connection successful.
+2026-09-28 09:35:01 | INFO | clearinghouse-ods-etl | Uploaded file to ./clearinghouse_20260928_093457_a051a4204df746d1a796754dae3478d2.txt
+2026-09-28 09:35:01 | INFO | clearinghouse-ods-etl | PHASE 5: file upload successful.
+2026-09-28 09:35:01 | ERROR | clearinghouse-ods-etl | Process failed. Run_ID=a051a4204df746d1a796754dae3478d2 Error=Failed to download response files from '/receive': [Errno 2] File does not exist.
+2026-09-28 09:41:23 | INFO | clearinghouse-ods-etl | Starting process. Run_ID=f9b46580e83d44ef9917bd2c22454854
+2026-09-28 09:41:23 | INFO | clearinghouse-ods-etl | PHASE 1: configuration and startup successful.
+2026-09-28 09:41:24 | INFO | clearinghouse-ods-etl | Extracted 5351 record(s).
+2026-09-28 09:41:24 | INFO | clearinghouse-ods-etl | Source validation passed.
+2026-09-28 09:41:24 | INFO | clearinghouse-ods-etl | PHASE 2: extraction and source validation successful.
+2026-09-28 09:41:24 | INFO | clearinghouse-ods-etl | Generated file: C:\Users\htalari\University of North Georgia\UNG Nest - Documents\Data Architecture and Strategy\Hrisheekesh Talari\Python\clearinghouse-ods-etl\output\clearinghouse_20260928_094124_f9b46580e83d44ef9917bd2c22454854.txt
+2026-09-28 09:41:24 | INFO | clearinghouse-ods-etl | File validation passed.
+2026-09-28 09:41:24 | INFO | clearinghouse-ods-etl | PHASE 3: file generation and validation successful.
+2026-09-28 09:41:25 | INFO | clearinghouse-ods-etl | SFTP connection established.
+2026-09-28 09:41:25 | INFO | clearinghouse-ods-etl | PHASE 4: SFTP connection successful.
+2026-09-28 09:41:25 | INFO | clearinghouse-ods-etl | Uploaded file to ./clearinghouse_20260928_094124_f9b46580e83d44ef9917bd2c22454854.txt
+2026-09-28 09:41:25 | INFO | clearinghouse-ods-etl | PHASE 5: file upload successful.
+2026-09-28 09:41:29 | INFO | clearinghouse-ods-etl | Downloaded 16 response file(s).
+2026-09-28 09:41:29 | INFO | clearinghouse-ods-etl | PHASE 6: response download successful.

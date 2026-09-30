@@ -22,7 +22,7 @@ class LogContext:
 
 class ETLDatabaseLogger:
     """
-    Logs ETL step activity to ODS_DEV.dbo.Log_ETL_Clearinghouse.
+    Logs ETL step activity to ODS_DEV.dbo.Log_Clearinghouse_ETL.
     """
 
     def __init__(self, connection: pyodbc.Connection) -> None:
@@ -40,7 +40,7 @@ class ETLDatabaseLogger:
     ) -> LogContext:
         start_time = datetime.now()
         sql = """
-            INSERT INTO dbo.Log_ETL_Clearinghouse
+            INSERT INTO dbo.Log_Clearinghouse_ETL
             (
                 Run_ID,
                 Process_Name,
@@ -102,7 +102,7 @@ class ETLDatabaseLogger:
         duration_seconds = int((end_time - context.start_time).total_seconds())
 
         sql = """
-            UPDATE dbo.Log_ETL_Clearinghouse
+            UPDATE dbo.Log_Clearinghouse_ETL
             SET
                 Step_Status = ?,
                 End_Time = ?,

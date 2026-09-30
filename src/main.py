@@ -52,7 +52,8 @@ def run_etl(config: Dict[str, Any]) -> int:
     try:
         db_connection = get_sql_connection(config)
         etl_db_logger = ETLDatabaseLogger(db_connection)
-
+        logger.info("PHASE 1: configuration and startup successful.")
+        #return 0
         step = etl_db_logger.start_step(
             run_id=run_id,
             process_name=process_name,
@@ -92,6 +93,9 @@ def run_etl(config: Dict[str, Any]) -> int:
                 records_extracted=extracted_count,
             )
             raise
+
+        logger.info("PHASE 2: extraction and source validation successful.")
+        #return 0
 
         step = etl_db_logger.start_step(
             run_id=run_id,
@@ -148,6 +152,9 @@ def run_etl(config: Dict[str, Any]) -> int:
             )
             raise
 
+        logger.info("PHASE 3: file generation and validation successful.")
+        #return 0
+
         step = etl_db_logger.start_step(
             run_id=run_id,
             process_name=process_name,
@@ -162,7 +169,8 @@ def run_etl(config: Dict[str, Any]) -> int:
         except SFTPConnectionError as exc:
             etl_db_logger.log_failure(step, error_message=str(exc))
             raise
-
+        logger.info("PHASE 4: SFTP connection successful.")
+        #return 0
         step = etl_db_logger.start_step(
             run_id=run_id,
             process_name=process_name,
@@ -199,6 +207,9 @@ def run_etl(config: Dict[str, Any]) -> int:
             )
             raise
 
+        logger.info("PHASE 5: file upload successful.")
+        #return 0
+
         step = etl_db_logger.start_step(
             run_id=run_id,
             process_name=process_name,
@@ -225,6 +236,9 @@ def run_etl(config: Dict[str, Any]) -> int:
             etl_db_logger.log_failure(step, error_message=str(exc))
             raise
 
+        logger.info("PHASE 6: response download successful.")
+        return 0
+        
         step = etl_db_logger.start_step(
             run_id=run_id,
             process_name=process_name,

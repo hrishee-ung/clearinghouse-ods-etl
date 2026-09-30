@@ -27,8 +27,8 @@ class SFTPClientManager:
 
         host = ch_config.get("host")
         port = int(ch_config.get("port", 22))
-        username = get_env_value(ch_config.get("username_env"), required=True)
-        private_key_path = get_env_value(ch_config.get("private_key_path_env"), required=True)
+        username = ch_config.get("username")
+        private_key_path = ch_config.get("private_key_path")
 
         connect_timeout = int(sftp_config.get("connect_timeout_seconds", 30))
         banner_timeout = int(sftp_config.get("banner_timeout_seconds", 30))
@@ -36,6 +36,10 @@ class SFTPClientManager:
 
         if not host:
             raise SFTPConnectionError("SFTP host is not configured.")
+        if not username:
+            raise SFTPConnectionError("SFTP username is not configured.")
+        if not private_key_path:
+            raise SFTPConnectionError("SFTP private key path is not configured.")
 
         try:
             private_key = self._load_private_key(private_key_path)
