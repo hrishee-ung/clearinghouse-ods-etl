@@ -110,3 +110,42 @@
 2026-09-28 09:41:25 | INFO | clearinghouse-ods-etl | PHASE 5: file upload successful.
 2026-09-28 09:41:29 | INFO | clearinghouse-ods-etl | Downloaded 16 response file(s).
 2026-09-28 09:41:29 | INFO | clearinghouse-ods-etl | PHASE 6: response download successful.
+2026-10-06 12:49:31 | INFO | clearinghouse-ods-etl | Starting process. Run_ID=a861563e73634abfb6ebf43ab6384183
+2026-10-06 12:49:32 | ERROR | clearinghouse-ods-etl | Process failed. Run_ID=a861563e73634abfb6ebf43ab6384183 Error=Failed to extract data from SQL Server: ('42S02', "[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'V_Student_Enrollment'. (208) (SQLExecDirectW)")
+2026-10-06 12:54:13 | INFO | clearinghouse-ods-etl | Starting process. Run_ID=7b346e5605384f79947893a6dc8484ac
+2026-10-06 12:54:14 | ERROR | clearinghouse-ods-etl | Process failed. Run_ID=7b346e5605384f79947893a6dc8484ac Error=Failed to extract data from SQL Server: ('42S22', "[42S22] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid column name 'SPRIDEN_SUFFIX'. (207) (SQLExecDirectW)")
+2026-10-06 13:03:57 | INFO | clearinghouse-ods-etl | Starting process. Run_ID=b8b458c1598c4ac39744b03ad6d8e812
+2026-10-06 13:04:11 | ERROR | clearinghouse-ods-etl | Process failed. Run_ID=b8b458c1598c4ac39744b03ad6d8e812 Error=Failed to extract data from SQL Server: ('42S02', "[42S02] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'Dim_Completion'. (208) (SQLExecDirectW)")
+2026-10-06 13:05:20 | INFO | clearinghouse-ods-etl | Starting process. Run_ID=2ea40d6a025e46d99d6924ebe07e8bea
+2026-10-06 13:05:34 | INFO | clearinghouse-ods-etl | Extracted 103507 record(s).
+2026-10-06 13:05:34 | INFO | clearinghouse-ods-etl | Source validation passed.
+2026-10-06 13:05:34 | ERROR | clearinghouse-ods-etl | Process failed. Run_ID=2ea40d6a025e46d99d6924ebe07e8bea Error=clearinghouse_layout.header_row is not configured.
+2026-10-06 13:10:40 | INFO | clearinghouse-ods-etl | Starting process. Run_ID=520fb3ccbe984b6b94abf8f342e375f7
+2026-10-06 13:10:54 | INFO | clearinghouse-ods-etl | Extracted 103507 record(s).
+2026-10-06 13:10:54 | INFO | clearinghouse-ods-etl | Source validation passed.
+2026-10-06 13:11:27 | INFO | clearinghouse-ods-etl | Generated 4 file pair(s).
+2026-10-06 13:11:56 | INFO | clearinghouse-ods-etl | File validation passed.
+2026-10-06 13:11:56 | INFO | clearinghouse-ods-etl | Skipping SFTP connection, upload, and download steps for testing purposes.
+2026-10-06 13:11:56 | INFO | clearinghouse-ods-etl | Archived workbook to C:\Users\htalari\University of North Georgia\UNG Nest - Documents\Data Architecture and Strategy\Hrisheekesh Talari\Python\clearinghouse-ods-etl\archive\clearinghouse_20261006_131054_520fb3ccbe984b6b94abf8f342e375f7.txt.xlsx
+2026-10-06 13:11:56 | INFO | clearinghouse-ods-etl | Archived text file to C:\Users\htalari\University of North Georgia\UNG Nest - Documents\Data Architecture and Strategy\Hrisheekesh Talari\Python\clearinghouse-ods-etl\archive\clearinghouse_20261006_131054_520fb3ccbe984b6b94abf8f342e375f7.txt.txt
+2026-10-06 13:11:56 | INFO | clearinghouse-ods-etl | Archived workbook to C:\Users\htalari\University of North Georgia\UNG Nest - Documents\Data Architecture and Strategy\Hrisheekesh Talari\Python\clearinghouse-ods-etl\archive\clearinghouse_20261006_131111_520fb3ccbe984b6b94abf8f342e375f7.txt.xlsx
+2026-10-06 13:11:56 | INFO | clearinghouse-ods-etl | Archived text file to C:\Users\htalari\University of North Georgia\UNG Nest - Documents\Data Architecture and Strategy\Hrisheekesh Talari\Python\clearinghouse-ods-etl\archive\clearinghouse_20261006_131111_520fb3ccbe984b6b94abf8f342e375f7.txt.txt
+2026-10-06 13:11:56 | ERROR | clearinghouse-ods-etl | Unexpected failure. Run_ID=520fb3ccbe984b6b94abf8f342e375f7
+Traceback (most recent call last):
+  File "C:\Program Files\Python313\Lib\shutil.py", line 856, in move
+    os.rename(src, real_dst)
+    ~~~~~~~~~^^^^^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\htalari\\University of North Georgia\\UNG Nest - Documents\\Data Architecture and Strategy\\Hrisheekesh Talari\\Python\\clearinghouse-ods-etl\\output\\clearinghouse_20261006_131118_520fb3ccbe984b6b94abf8f342e375f7.txt.xlsx' -> 'C:\\Users\\htalari\\University of North Georgia\\UNG Nest - Documents\\Data Architecture and Strategy\\Hrisheekesh Talari\\Python\\clearinghouse-ods-etl\\archive\\clearinghouse_20261006_131118_520fb3ccbe984b6b94abf8f342e375f7.txt.xlsx'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\htalari\University of North Georgia\UNG Nest - Documents\Data Architecture and Strategy\Hrisheekesh Talari\Python\clearinghouse-ods-etl\src\main.py", line 226, in run_etl
+    archived_workbook = archive_file(artifact["workbook_path"], archive_dir)
+  File "C:\Users\htalari\University of North Georgia\UNG Nest - Documents\Data Architecture and Strategy\Hrisheekesh Talari\Python\clearinghouse-ods-etl\src\file_utils.py", line 18, in archive_file
+    shutil.move(str(source_path), str(target_path))
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python313\Lib\shutil.py", line 877, in move
+    os.unlink(src)
+    ~~~~~~~~~^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\htalari\\University of North Georgia\\UNG Nest - Documents\\Data Architecture and Strategy\\Hrisheekesh Talari\\Python\\clearinghouse-ods-etl\\output\\clearinghouse_20261006_131118_520fb3ccbe984b6b94abf8f342e375f7.txt.xlsx'

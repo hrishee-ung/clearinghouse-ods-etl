@@ -1,13 +1,15 @@
 from __future__ import annotations
 
 import logging
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict
 
 
-def setup_application_logger(config: Dict[str, Any]) -> logging.Logger:
+def setup_application_logger(config: Dict[str, Any], run_id: str) -> logging.Logger:
     """
     Configure and return the application logger.
+    Creates a separate log file for each run.
     """
     app_config = config.get("app", {})
     paths_config = config.get("paths", {})
@@ -17,9 +19,12 @@ def setup_application_logger(config: Dict[str, Any]) -> logging.Logger:
     logs_dir = Path(paths_config.get("logs", "."))
     logs_dir.mkdir(parents=True, exist_ok=True)
 
-    log_file = logs_dir / f"{process_name.lower()}.log"
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    short_run_id = run_id[:8]
+    log_file = logs_dir / f"{process_name.lower()}_{timestamp}_{short_run_id}.log"
 
-    logger = logging.getLogger(process_name)
+    logger_name = f"{process_name}_{run_id}"
+    logger = logging.getLogger(logger_name)
     logger.setLevel(getattr(logging, log_level, logging.INFO))
     logger.handlers.clear()
     logger.propagate = False

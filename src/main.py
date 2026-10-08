@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import sys
+import time
 from pathlib import Path
 from typing import Any, Dict
 from uuid import uuid4
@@ -22,8 +23,8 @@ from extract import extract_clearinghouse_data
 from file_utils import archive_file
 from logging_utils import sanitize_error_message, setup_application_logger
 from sftp_client import SFTPClientManager
-from transform import generate_clearinghouse_file
-from validate import validate_clearinghouse_file, validate_source_data
+from transform import generate_clearinghouse_files
+from validate import validate_clearinghouse_files, validate_source_data
 
 
 def generate_run_id() -> str:
@@ -31,9 +32,14 @@ def generate_run_id() -> str:
 
 
 def run_etl(config: Dict[str, Any]) -> int:
+    # --- TESTING FLAG ---
+    skip_sftp = True  # Set to False to re-enable SFTP uploads and downloads
+    # --------------------
+
     process_name = config.get("app", {}).get("process_name", "Clearinghouse_ETL")
-    logger = setup_application_logger(config)
     run_id = generate_run_id()
+    logger = setup_application_logger(config, run_id)
+    
 
     logger.info("Starting process. Run_ID=%s", run_id)
 
@@ -43,17 +49,15 @@ def run_etl(config: Dict[str, Any]) -> int:
     sftp_manager = None
     etl_db_logger = None
 
-    data = None
+    extracted_data = None
     extracted_count = 0
-    output_file_path: Path | None = None
-    generated_record_count = 0
-    uploaded_remote_path: str | None = None
+    file_artifacts: list[dict[str, Any]] = []
+    uploaded_remote_paths: list[str] = []
 
     try:
         db_connection = get_sql_connection(config)
         etl_db_logger = ETLDatabaseLogger(db_connection)
-        logger.info("PHASE 1: configuration and startup successful.")
-        #return 0
+
         step = etl_db_logger.start_step(
             run_id=run_id,
             process_name=process_name,
@@ -61,11 +65,11 @@ def run_etl(config: Dict[str, Any]) -> int:
             message="Beginning source extraction.",
         )
         try:
-            data, extracted_count = extract_clearinghouse_data(db_connection, config)
+            extracted_data, extracted_count = extract_clearinghouse_data(db_connection, config)
             etl_db_logger.log_success(
                 step,
                 records_extracted=extracted_count,
-                message=f"Successfully extracted {extracted_count} record(s).",
+                message=f"Successfully extracted {extracted_count} record(s) across all queries.",
             )
             logger.info("Extracted %s record(s).", extracted_count)
         except ExtractionError as exc:
@@ -79,7 +83,7 @@ def run_etl(config: Dict[str, Any]) -> int:
             message="Validating extracted source data.",
         )
         try:
-            validate_source_data(data, config)
+            validate_source_data(extracted_data, config)
             etl_db_logger.log_success(
                 step,
                 records_extracted=extracted_count,
@@ -94,29 +98,24 @@ def run_etl(config: Dict[str, Any]) -> int:
             )
             raise
 
-        logger.info("PHASE 2: extraction and source validation successful.")
-        #return 0
-
         step = etl_db_logger.start_step(
             run_id=run_id,
             process_name=process_name,
-            step_name="Generate File",
-            message="Generating outbound submission file.",
+            step_name="Generate Files",
+            message="Generating individual workbook and text files.",
         )
         try:
-            output_file_path, generated_record_count = generate_clearinghouse_file(
-                data=data,
+            file_artifacts, total_generated_records = generate_clearinghouse_files(
+                extracted_data=extracted_data,
                 config=config,
                 run_id=run_id,
             )
             etl_db_logger.log_success(
                 step,
-                file_name=output_file_path.name,
-                file_path=str(output_file_path),
-                records_processed=generated_record_count,
-                message="Submission file generated successfully.",
+                records_processed=total_generated_records,
+                message=f"Generated {len(file_artifacts)} workbook/text file pair(s).",
             )
-            logger.info("Generated file: %s", output_file_path)
+            logger.info("Generated %s file pair(s).", len(file_artifacts))
         except FileGenerationError as exc:
             etl_db_logger.log_failure(step, error_message=str(exc))
             raise
@@ -124,142 +123,144 @@ def run_etl(config: Dict[str, Any]) -> int:
         step = etl_db_logger.start_step(
             run_id=run_id,
             process_name=process_name,
-            step_name="Validate File",
-            file_name=output_file_path.name if output_file_path else None,
-            file_path=str(output_file_path) if output_file_path else None,
-            message="Validating generated submission file.",
+            step_name="Validate Files",
+            message="Validating generated workbook and text files.",
         )
         try:
-            validate_clearinghouse_file(
-                file_path=output_file_path,
-                expected_record_count=generated_record_count,
-                config=config,
-            )
+            validate_clearinghouse_files(file_artifacts, config)
             etl_db_logger.log_success(
                 step,
-                file_name=output_file_path.name if output_file_path else None,
-                file_path=str(output_file_path) if output_file_path else None,
-                records_processed=generated_record_count,
-                message="File validation passed.",
+                records_processed=sum(a["record_count"] for a in file_artifacts),
+                message="All generated files passed validation.",
             )
             logger.info("File validation passed.")
         except ValidationError as exc:
-            etl_db_logger.log_failure(
-                step,
-                error_message=str(exc),
-                file_name=output_file_path.name if output_file_path else None,
-                file_path=str(output_file_path) if output_file_path else None,
-            )
-            raise
-
-        logger.info("PHASE 3: file generation and validation successful.")
-        #return 0
-
-        step = etl_db_logger.start_step(
-            run_id=run_id,
-            process_name=process_name,
-            step_name="Connect SFTP",
-            message="Establishing SFTP connection.",
-        )
-        try:
-            sftp_manager = SFTPClientManager(config)
-            sftp_manager.connect_sftp()
-            etl_db_logger.log_success(step, message="SFTP connection established successfully.")
-            logger.info("SFTP connection established.")
-        except SFTPConnectionError as exc:
-            etl_db_logger.log_failure(step, error_message=str(exc))
-            raise
-        logger.info("PHASE 4: SFTP connection successful.")
-        #return 0
-        step = etl_db_logger.start_step(
-            run_id=run_id,
-            process_name=process_name,
-            step_name="Upload File",
-            file_name=output_file_path.name if output_file_path else None,
-            file_path=str(output_file_path) if output_file_path else None,
-            message="Uploading submission file to Clearinghouse.",
-        )
-        try:
-            ch_config = config.get("clearinghouse", {})
-            sftp_config = config.get("sftp", {})
-            uploaded_remote_path = sftp_manager.upload_file(
-                local_file_path=output_file_path,
-                remote_directory=ch_config.get("upload_directory", "/upload"),
-                verify_remote=bool(ch_config.get("verify_remote_after_upload", True)),
-                max_retries=int(sftp_config.get("max_retries", 3)),
-                retry_delay_seconds=int(sftp_config.get("retry_delay_seconds", 10)),
-            )
-            etl_db_logger.log_success(
-                step,
-                file_name=output_file_path.name if output_file_path else None,
-                file_path=str(output_file_path) if output_file_path else None,
-                remote_path=uploaded_remote_path,
-                records_uploaded=generated_record_count,
-                message="File uploaded successfully.",
-            )
-            logger.info("Uploaded file to %s", uploaded_remote_path)
-        except SFTPUploadError as exc:
-            etl_db_logger.log_failure(
-                step,
-                error_message=str(exc),
-                file_name=output_file_path.name if output_file_path else None,
-                file_path=str(output_file_path) if output_file_path else None,
-            )
-            raise
-
-        logger.info("PHASE 5: file upload successful.")
-        #return 0
-
-        step = etl_db_logger.start_step(
-            run_id=run_id,
-            process_name=process_name,
-            step_name="Download Responses",
-            message="Downloading available response files.",
-        )
-        try:
-            ch_config = config.get("clearinghouse", {})
-            sftp_config = config.get("sftp", {})
-            responses_dir = config.get("paths", {}).get("responses")
-
-            downloaded_files = sftp_manager.download_response_files(
-                remote_directory=ch_config.get("receive_directory", "/receive"),
-                local_directory=responses_dir,
-                allowed_extensions=sftp_config.get("response_file_extensions", []),
-            )
-            etl_db_logger.log_success(
-                step,
-                records_downloaded=len(downloaded_files),
-                message=f"Downloaded {len(downloaded_files)} response file(s).",
-            )
-            logger.info("Downloaded %s response file(s).", len(downloaded_files))
-        except SFTPDownloadError as exc:
             etl_db_logger.log_failure(step, error_message=str(exc))
             raise
 
-        logger.info("PHASE 6: response download successful.")
-        return 0
-        
+        if skip_sftp:
+            logger.info("Skipping SFTP connection, upload, and download steps for testing purposes.")
+        else:
+            step = etl_db_logger.start_step(
+                run_id=run_id,
+                process_name=process_name,
+                step_name="Connect SFTP",
+                message="Establishing SFTP connection.",
+            )
+            try:
+                sftp_manager = SFTPClientManager(config)
+                sftp_manager.connect_sftp()
+                etl_db_logger.log_success(step, message="SFTP connection established successfully.")
+                logger.info("SFTP connection established.")
+            except SFTPConnectionError as exc:
+                etl_db_logger.log_failure(step, error_message=str(exc))
+                raise
+
+            ch_config = config.get("clearinghouse", {})
+            sftp_config = config.get("sftp", {})
+
+            for artifact in file_artifacts:
+                upload_step = etl_db_logger.start_step(
+                    run_id=run_id,
+                    process_name=process_name,
+                    step_name=f"Upload File - {artifact['file_key']}",
+                    file_name=artifact["text_file_path"].name,
+                    file_path=str(artifact["text_file_path"]),
+                    message=f"Uploading text file for {artifact['file_key']}.",
+                )
+                try:
+                    uploaded_remote_path = sftp_manager.upload_file(
+                        local_file_path=artifact["text_file_path"],
+                        remote_directory=ch_config.get("upload_directory", "."),
+                        verify_remote=bool(ch_config.get("verify_remote_after_upload", True)),
+                        max_retries=int(sftp_config.get("max_retries", 3)),
+                        retry_delay_seconds=int(sftp_config.get("retry_delay_seconds", 10)),
+                    )
+                    uploaded_remote_paths.append(uploaded_remote_path)
+
+                    etl_db_logger.log_success(
+                        upload_step,
+                        file_name=artifact["text_file_path"].name,
+                        file_path=str(artifact["text_file_path"]),
+                        remote_path=uploaded_remote_path,
+                        records_uploaded=artifact["record_count"],
+                        message=f"Uploaded text file for {artifact['file_key']} successfully.",
+                    )
+                    logger.info("Uploaded %s to %s", artifact["text_file_path"].name, uploaded_remote_path)
+                except SFTPUploadError as exc:
+                    etl_db_logger.log_failure(upload_step, error_message=str(exc))
+                    raise
+
+            step = etl_db_logger.start_step(
+                run_id=run_id,
+                process_name=process_name,
+                step_name="Download Responses",
+                message="Downloading available response files.",
+            )
+            try:
+                responses_dir = config.get("paths", {}).get("responses")
+
+                downloaded_files = sftp_manager.download_response_files(
+                    remote_directory=ch_config.get("receive_directory", "receive"),
+                    local_directory=responses_dir,
+                    allowed_extensions=sftp_config.get("response_file_extensions", []),
+                )
+                etl_db_logger.log_success(
+                    step,
+                    records_downloaded=len(downloaded_files),
+                    message=f"Downloaded {len(downloaded_files)} response file(s).",
+                )
+                logger.info("Downloaded %s response file(s).", len(downloaded_files))
+            except SFTPDownloadError as exc:
+                etl_db_logger.log_failure(step, error_message=str(exc))
+                raise
+
         step = etl_db_logger.start_step(
             run_id=run_id,
             process_name=process_name,
-            step_name="Archive File",
-            file_name=output_file_path.name if output_file_path else None,
-            file_path=str(output_file_path) if output_file_path else None,
-            remote_path=uploaded_remote_path,
-            message="Archiving local submission file after successful upload.",
+            step_name="Archive Files",
+            message="Archiving generated workbook and text files after successful upload.",
         )
         try:
             archive_dir = config.get("paths", {}).get("archive")
-            archived_path = archive_file(output_file_path, archive_dir)
+
+            # Give Windows / OneDrive / antivirus a brief moment to release file handles
+            time.sleep(3)
+
+            archive_warnings: list[str] = []
+
+            for artifact in file_artifacts:
+                archived_workbook, workbook_deleted = archive_file(artifact["workbook_path"], archive_dir)
+                archived_text, text_deleted = archive_file(artifact["text_file_path"], archive_dir)
+
+                logger.info("Archived workbook to %s", archived_workbook)
+                logger.info("Archived text file to %s", archived_text)
+
+                if not workbook_deleted:
+                    warning = (
+                        f"Workbook source file could not be deleted after archive copy: "
+                        f"{artifact['workbook_path']}"
+                    )
+                    archive_warnings.append(warning)
+                    logger.warning(warning)
+
+                if not text_deleted:
+                    warning = (
+                        f"Text source file could not be deleted after archive copy: "
+                        f"{artifact['text_file_path']}"
+                    )
+                    archive_warnings.append(warning)
+                    logger.warning(warning)
+
+            message = f"Archived {len(file_artifacts)} workbook/text file pair(s)."
+            if archive_warnings:
+                message = message + " Some source files remained in output because they were locked."
+
             etl_db_logger.log_success(
                 step,
-                file_name=archived_path.name,
-                file_path=str(archived_path),
-                remote_path=uploaded_remote_path,
-                records_processed=generated_record_count,
-                message="Submission file archived successfully.",
+                records_processed=sum(a["record_count"] for a in file_artifacts),
+                message=message,
             )
-            logger.info("Archived file to %s", archived_path)
         except OSError as exc:
             etl_db_logger.log_failure(step, error_message=str(exc))
             raise
