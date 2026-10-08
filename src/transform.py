@@ -143,6 +143,7 @@ def generate_clearinghouse_files(
     extracted_data: dict[str, pd.DataFrame],
     config: Dict[str, Any],
     run_id: str,
+    file_key: str,
 ) -> tuple[list[dict[str, Any]], int]:
     """
     Generate separate Excel and tab-delimited text files for each configured query.

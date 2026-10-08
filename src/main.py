@@ -109,6 +109,7 @@ def run_etl(config: Dict[str, Any]) -> int:
                 extracted_data=extracted_data,
                 config=config,
                 run_id=run_id,
+                file_key=file_key,
             )
             etl_db_logger.log_success(
                 step,
