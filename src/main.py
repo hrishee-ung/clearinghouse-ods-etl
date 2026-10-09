@@ -33,7 +33,7 @@ def generate_run_id() -> str:
 
 def run_etl(config: Dict[str, Any]) -> int:
     # --- TESTING FLAG ---
-    skip_sftp = True  # Set to False to re-enable SFTP uploads and downloads
+    skip_sftp = False  # Set to False to re-enable SFTP uploads and downloads
     # --------------------
 
     process_name = config.get("app", {}).get("process_name", "Clearinghouse_ETL")

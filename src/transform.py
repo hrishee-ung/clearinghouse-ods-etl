@@ -58,7 +58,7 @@ def build_formatted_rows(
     E = Last Name
     F = Name Suffix
     G = Date of Birth
-    H = File creation date
+    H = NSC_SearchDate
     I = blank
     J = 001585
     K = 00
@@ -78,6 +78,7 @@ def build_formatted_rows(
     last_name = _required_column(df, "SPRIDEN_LAST_NAME", file_key)
     name_suffix = _required_column(df, "NAME_SUFFIX", file_key)
     birthdate = _required_column(df, "NSC_BIRTHDATE", file_key)
+    search_date = _required_column(df, "NSC_SearchDate", file_key)
     term_code = _required_column(df, "TERM_CODE", file_key)
     ung_id = _required_column(df, "UNG_ID", file_key)
 
@@ -92,7 +93,7 @@ def build_formatted_rows(
             _normalize_cell(last_name.loc[idx]),    # E
             _normalize_cell(name_suffix.loc[idx]),  # F
             _normalize_cell(birthdate.loc[idx]),    # G
-            file_date,                              # H
+            _normalize_cell(search_date.loc[idx]),  # H
             "",                                     # I
             "001585",                               # J
             "00",                                   # K

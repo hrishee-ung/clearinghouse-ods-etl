@@ -34,6 +34,7 @@ def validate_source_data(
         "SPRIDEN_LAST_NAME",
         "NAME_SUFFIX",
         "NSC_BIRTHDATE",
+        "NSC_SearchDate",
     ]
 
     for file_key, df in data.items():
